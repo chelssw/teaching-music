@@ -13,10 +13,15 @@
         <lesson-card
           [lesson]="lesson"
           [userRole]="userRole"
+          [notesExpanded]="expandedLessonId() === lesson.id"
           (confirmLesson)="onConfirm($event)"
           (completeLesson)="onComplete($event)"
           (cancelLesson)="onCancel($event)"
+          (toggleNotes)="onToggleNotes($event)"
         />
+        @if (expandedLessonId() === lesson.id) {
+          <lesson-notes-panel [lessonId]="lesson.id" [userRole]="userRole" />
+        }
       }
     </div>
   }

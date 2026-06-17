@@ -1,0 +1,10 @@
+@if (label()) {
+  <label class="textarea-label" [for]="id()">{{ label() }}</label>
+}
+<textarea
+  class="textarea-control"
+  [id]="id()"
+  [placeholder]="placeholder()"
+  [rows]="rows()"
+  (input)="onInput($event)"
+>{{ value() }}</textarea>

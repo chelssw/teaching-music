@@ -15,9 +15,11 @@ import { Lesson } from '../../../../core/scheduling/scheduling.models';
 export class LessonCardComponent {
   readonly lesson = input.required<Lesson>();
   readonly userRole = input.required<'teacher' | 'student'>();
+  readonly notesExpanded = input<boolean>(false);
   readonly confirmLesson = output<string>();
   readonly completeLesson = output<string>();
   readonly cancelLesson = output<string>();
+  readonly toggleNotes = output<string>();
 
   get badgeVariant(): BadgeVariant {
     const map: Record<string, BadgeVariant> = {

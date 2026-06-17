@@ -1,0 +1,59 @@
+<div class="notes-panel">
+  <div class="notes-panel__header">
+    <h4 class="notes-panel__title">Lesson Notes</h4>
+    @if (userRole() === 'teacher') {
+      <app-button label="+ Add Note" variant="primary" (click)="openAddForm()" />
+    }
+  </div>
+
+  @if (showForm()) {
+    <div class="notes-panel__form">
+      <app-input
+        id="note-title"
+        label="Title"
+        [value]="formTitle()"
+        (valueChange)="formTitle.set($event)"
+      />
+      <app-textarea
+        id="note-content"
+        label="Content"
+        [value]="formContent()"
+        [rows]="5"
+        (valueChange)="formContent.set($event)"
+      />
+      <app-select
+        id="note-visibility"
+        label="Visibility"
+        [options]="visibilityOptions"
+        [value]="formVisibility()"
+        (valueChange)="setVisibility($event)"
+      />
+      <div class="notes-panel__form-actions">
+        <app-button
+          [label]="editingNote() ? 'Update Note' : 'Save Note'"
+          variant="primary"
+          [disabled]="!formTitle() || !formContent()"
+          (click)="saveNote()"
+        />
+        <app-button label="Cancel" variant="secondary" (click)="cancelForm()" />
+      </div>
+    </div>
+  }
+
+  @if (loading()) {
+    <p class="notes-panel__empty">Loading notes…</p>
+  } @else if (notes().length === 0) {
+    <p class="notes-panel__empty">No notes yet.</p>
+  } @else {
+    <div class="notes-panel__list">
+      @for (note of notes(); track note.id) {
+        <note-card
+          [note]="note"
+          [userRole]="userRole()"
+          (editNote)="openEditForm($event)"
+          (deleteNote)="onDeleteNote($event)"
+        />
+      }
+    </div>
+  }
+</div>

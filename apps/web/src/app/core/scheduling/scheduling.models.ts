@@ -1,4 +1,5 @@
 export type LessonStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
+export type LessonNoteVisibility = 'teacher_private' | 'shared_with_student';
 
 export interface LessonType {
   id: string;
@@ -33,4 +34,15 @@ export interface Lesson {
   meetingUrl?: string;
   cancellationReason?: string;
   createdAt: string;
+}
+
+export interface LessonNote {
+  id: string;
+  lessonId: string;
+  authorId: string;
+  visibility: LessonNoteVisibility;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
 }

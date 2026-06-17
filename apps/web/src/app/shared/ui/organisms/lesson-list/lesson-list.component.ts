@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { AppSpinnerComponent } from '../../atoms/app-spinner/app-spinner.component';
 import { LessonCardComponent } from '../../molecules/lesson-card/lesson-card.component';
+import { LessonNotesPanelComponent } from '../lesson-notes-panel/lesson-notes-panel.component';
 import { SchedulingService } from '../../../../core/scheduling/scheduling.service';
 import { AuthStoreService } from '../../../../core/auth/auth-store.service';
 import { Lesson } from '../../../../core/scheduling/scheduling.models';
@@ -8,7 +9,7 @@ import { Lesson } from '../../../../core/scheduling/scheduling.models';
 @Component({
   selector: 'lesson-list',
   standalone: true,
-  imports: [AppSpinnerComponent, LessonCardComponent],
+  imports: [AppSpinnerComponent, LessonCardComponent, LessonNotesPanelComponent],
   templateUrl: './lesson-list.component.html',
   styleUrl: './lesson-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -20,6 +21,7 @@ export class LessonListComponent implements OnInit {
   readonly lessons = signal<Lesson[]>([]);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
+  readonly expandedLessonId = signal<string | null>(null);
 
   get userRole(): 'teacher' | 'student' {
     return this.authStore.user()?.role ?? 'student';
@@ -64,6 +66,10 @@ export class LessonListComponent implements OnInit {
       next: updated => this.patchLesson(updated),
       error: () => this.error.set('Failed to cancel lesson.')
     });
+  }
+
+  onToggleNotes(lessonId: string) {
+    this.expandedLessonId.update(current => (current === lessonId ? null : lessonId));
   }
 
   private patchLesson(updated: Lesson) {

@@ -1,0 +1,22 @@
+<app-card>
+  <div class="note-card">
+    <div class="note-card__header">
+      <span class="note-card__title">{{ note().title }}</span>
+      <div class="note-card__meta">
+        @if (userRole() === 'teacher') {
+          <app-badge [text]="visibilityLabel" [variant]="visibilityVariant" />
+        }
+        <span class="note-card__date">{{ formatDate(note().updatedAt) }}</span>
+      </div>
+    </div>
+
+    <p class="note-card__content">{{ note().content }}</p>
+
+    @if (userRole() === 'teacher') {
+      <div class="note-card__actions">
+        <app-button label="Edit" variant="secondary" (click)="editNote.emit(note())" />
+        <app-button label="Delete" variant="danger" (click)="deleteNote.emit(note().id)" />
+      </div>
+    }
+  </div>
+</app-card>

@@ -16,8 +16,8 @@
       <p class="lesson-card__reason">Reason: {{ lesson().cancellationReason }}</p>
     }
 
-    @if (lesson().status !== 'completed' && lesson().status !== 'cancelled') {
-      <div class="lesson-card__actions">
+    <div class="lesson-card__actions">
+      @if (lesson().status !== 'completed' && lesson().status !== 'cancelled') {
         @if (userRole() === 'teacher' && lesson().status === 'pending') {
           <app-button label="Confirm" (click)="confirmLesson.emit(lesson().id)" />
         }
@@ -25,7 +25,12 @@
           <app-button label="Mark Complete" (click)="completeLesson.emit(lesson().id)" />
         }
         <app-button label="Cancel" variant="danger" (click)="cancelLesson.emit(lesson().id)" />
-      </div>
-    }
+      }
+      <app-button
+        [label]="notesExpanded() ? 'Hide Notes' : 'Notes'"
+        variant="secondary"
+        (click)="toggleNotes.emit(lesson().id)"
+      />
+    </div>
   </div>
 </app-card>

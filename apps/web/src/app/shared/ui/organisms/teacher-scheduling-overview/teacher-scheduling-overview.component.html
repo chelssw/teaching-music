@@ -1,0 +1,18 @@
+<section class="overview">
+  <header class="overview-header">
+    <div>
+      <h1>Teacher Scheduling Dashboard</h1>
+      <p>Atomic components compose this page from atoms to organisms.</p>
+    </div>
+    <div class="overview-actions">
+      <app-button label="Set Availability" />
+      <app-button label="New Lesson Slot" variant="secondary" />
+    </div>
+  </header>
+
+  <div class="metrics">
+    <lesson-metric-tile label="Lessons this week" value="18" changeLabel="+2 vs last week" />
+    <lesson-metric-tile label="Open slots" value="12" changeLabel="Filling quickly" />
+    <lesson-metric-tile label="Pending requests" value="4" changeLabel="Needs review" />
+  </div>
+</section>

@@ -1,0 +1,56 @@
+<main class="register-page">
+  <app-card>
+    <div class="register-form">
+      <div class="form-header">
+        <h1 class="form-title">Create Account</h1>
+        <p class="form-subtitle">Join Music Lessons today</p>
+      </div>
+
+      <app-input
+        id="full-name"
+        label="Full Name"
+        placeholder="Jane Smith"
+        [value]="fullName()"
+        (valueChange)="fullName.set($event)"
+      />
+      <app-input
+        id="email"
+        label="Email"
+        type="email"
+        placeholder="your@email.com"
+        [value]="email()"
+        (valueChange)="email.set($event)"
+      />
+      <app-input
+        id="password"
+        label="Password"
+        type="password"
+        placeholder="••••••••"
+        [value]="password()"
+        (valueChange)="password.set($event)"
+      />
+      <app-select
+        id="role"
+        label="I am a…"
+        [options]="roleOptions"
+        [value]="role()"
+        (valueChange)="setRole($event)"
+      />
+
+      @if (error()) {
+        <p class="form-error">{{ error() }}</p>
+      }
+
+      <app-button
+        label="Create Account"
+        type="submit"
+        [disabled]="loading()"
+        (click)="register()"
+      />
+
+      <p class="form-footer">
+        Already have an account? <a routerLink="/login">Sign in</a>
+      </p>
+    </div>
+  </app-card>
+</main>

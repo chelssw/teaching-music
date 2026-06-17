@@ -1,0 +1,32 @@
+.overview {
+  display: grid;
+  gap: 1rem;
+}
+
+.overview-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.overview-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.overview-header p {
+  margin: 0.35rem 0 0;
+  color: #57606a;
+}
+
+.overview-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}

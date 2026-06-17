@@ -1,0 +1,23 @@
+.slot-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .slot-day {
+    font-weight: 600;
+    font-size: 0.875rem;
+    min-width: 95px;
+  }
+
+  .slot-time {
+    flex: 1;
+    font-size: 0.875rem;
+    color: #57606a;
+  }
+}

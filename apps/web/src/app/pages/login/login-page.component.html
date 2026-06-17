@@ -1,0 +1,37 @@
+<main class="login-page">
+  <app-card>
+    <div class="login-form">
+      <div class="form-header">
+        <h1 class="form-title">Sign In</h1>
+        <p class="form-subtitle">Welcome back to Music Lessons</p>
+      </div>
+
+      <app-input
+        id="email"
+        label="Email"
+        type="email"
+        placeholder="your@email.com"
+        [value]="email()"
+        (valueChange)="email.set($event)"
+      />
+      <app-input
+        id="password"
+        label="Password"
+        type="password"
+        placeholder="••••••••"
+        [value]="password()"
+        (valueChange)="password.set($event)"
+      />
+
+      @if (error()) {
+        <p class="form-error">{{ error() }}</p>
+      }
+
+      <app-button label="Sign In" type="submit" [disabled]="loading()" (click)="login()" />
+
+      <p class="form-footer">
+        Don't have an account? <a routerLink="/register">Create one</a>
+      </p>
+    </div>
+  </app-card>
+</main>

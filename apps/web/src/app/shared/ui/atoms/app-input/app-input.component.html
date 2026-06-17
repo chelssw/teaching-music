@@ -1,0 +1,12 @@
+@if (label()) {
+  <label class="input-label" [for]="id()">{{ label() }}</label>
+}
+<input
+  class="input-control"
+  [id]="id()"
+  [type]="type()"
+  [placeholder]="placeholder()"
+  [value]="value()"
+  [disabled]="disabled()"
+  (input)="onInput($event)"
+/>

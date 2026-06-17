@@ -1,0 +1,21 @@
+<div class="dashboard">
+  <header class="dashboard-header">
+    <div>
+      <h1 class="dashboard-title">Student Dashboard</h1>
+      <p class="dashboard-subtitle">Welcome, {{ authStore.user()?.fullName }}</p>
+    </div>
+    <app-button label="Log Out" variant="secondary" (click)="logout()" />
+  </header>
+
+  <main class="dashboard-body">
+    <section class="dashboard-section">
+      <lesson-list />
+    </section>
+
+    <aside class="dashboard-sidebar">
+      <section class="dashboard-section">
+        <book-lesson-panel />
+      </section>
+    </aside>
+  </main>
+</div>

@@ -1,0 +1,27 @@
+<div class="dashboard">
+  <header class="dashboard-header">
+    <div>
+      <h1 class="dashboard-title">Teacher Dashboard</h1>
+      <p class="dashboard-subtitle">Welcome, {{ authStore.user()?.fullName }}</p>
+    </div>
+    <div class="header-meta">
+      <span class="user-id-hint">Your ID: <code>{{ authStore.user()?.id }}</code></span>
+      <app-button label="Log Out" variant="secondary" (click)="logout()" />
+    </div>
+  </header>
+
+  <main class="dashboard-body">
+    <section class="dashboard-section">
+      <lesson-list />
+    </section>
+
+    <div class="dashboard-sidebar">
+      <section class="dashboard-section">
+        <lesson-types-manager />
+      </section>
+      <section class="dashboard-section">
+        <availability-manager />
+      </section>
+    </div>
+  </main>
+</div>

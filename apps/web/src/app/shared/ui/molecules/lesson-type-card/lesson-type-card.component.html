@@ -1,0 +1,17 @@
+<app-card>
+  <div class="type-card">
+    <div class="type-card__header">
+      <h3 class="type-card__title">{{ lessonType().title }}</h3>
+      @if (showDelete()) {
+        <app-button label="Delete" variant="danger" (click)="deleteType.emit(lessonType().id)" />
+      }
+    </div>
+    @if (lessonType().description) {
+      <p class="type-card__desc">{{ lessonType().description }}</p>
+    }
+    <div class="type-card__meta">
+      <span class="meta-chip">{{ lessonType().durationMinutes }} min</span>
+      <span class="meta-chip">{{ formattedPrice }}</span>
+    </div>
+  </div>
+</app-card>

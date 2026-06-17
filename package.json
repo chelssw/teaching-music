@@ -1,0 +1,19 @@
+{
+  "name": "music-app-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "install:all": "npm install --workspaces",
+    "web:start": "npm --prefix apps/web run start",
+    "web:build": "npm --prefix apps/web run build",
+    "web:test": "npm --prefix apps/web run test",
+    "api:start": "npm --prefix apps/api run start:dev",
+    "api:build": "npm --prefix apps/api run build",
+    "api:test": "npm --prefix apps/api run test",
+    "contracts:build": "npm --prefix packages/contracts run build"
+  }
+}

@@ -1,0 +1,40 @@
+.type-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__desc {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #57606a;
+  }
+
+  &__meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+}
+
+.meta-chip {
+  display: inline-block;
+  border-radius: 999px;
+  background: #f0f4ff;
+  color: #1f3a5f;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.15rem 0.6rem;
+}

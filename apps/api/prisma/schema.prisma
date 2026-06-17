@@ -1,0 +1,203 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String              @id @default(cuid())
+  email          String              @unique
+  fullName       String
+  passwordHash   String
+  role           UserRole
+  teacherProfile TeacherProfile?
+  studentProfile StudentProfile?
+  taughtLessons  Lesson[]            @relation("TeacherLessons")
+  takenLessons   Lesson[]            @relation("StudentLessons")
+  filesUploaded  SharedFile[]        @relation("UploaderFiles")
+  notesAuthored  LessonNote[]        @relation("AuthorLessonNotes")
+  submissions    PracticeSubmission[]
+  payments       Payment[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+}
+
+enum UserRole {
+  teacher
+  student
+}
+
+model TeacherProfile {
+  id                 String             @id @default(cuid())
+  userId             String             @unique
+  bio                String?
+  timezone           String
+  baseHourlyRateCents Int?
+  lessonTypes        LessonType[]
+  availabilitySlots  AvailabilitySlot[]
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+}
+
+model StudentProfile {
+  id            String              @id @default(cuid())
+  userId        String              @unique
+  timezone      String
+  goals         String?
+  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonNotes   LessonNote[]
+  submissions   PracticeSubmission[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
+model LessonType {
+  id                 String         @id @default(cuid())
+  teacherProfileId   String
+  title              String
+  description        String?
+  durationMinutes    Int
+  priceCents         Int
+  teacherProfile     TeacherProfile @relation(fields: [teacherProfileId], references: [id], onDelete: Cascade)
+  lessons            Lesson[]
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+model AvailabilitySlot {
+  id               String           @id @default(cuid())
+  teacherProfileId String
+  weekday          Int
+  startTime        String
+  endTime          String
+  isActive         Boolean          @default(true)
+  teacherProfile   TeacherProfile   @relation(fields: [teacherProfileId], references: [id], onDelete: Cascade)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+model Lesson {
+  id               String             @id @default(cuid())
+  teacherId        String
+  studentId        String
+  lessonTypeId     String
+  startsAt         DateTime
+  endsAt           DateTime
+  timezone         String
+  status           LessonStatus       @default(pending)
+  meetingUrl       String?
+  cancellationReason String?
+  teacher          User               @relation("TeacherLessons", fields: [teacherId], references: [id], onDelete: Cascade)
+  student          User               @relation("StudentLessons", fields: [studentId], references: [id], onDelete: Cascade)
+  lessonType       LessonType         @relation(fields: [lessonTypeId], references: [id], onDelete: Restrict)
+  notes            LessonNote[]
+  files            SharedFile[]
+  submissions      PracticeSubmission[]
+  payments         Payment[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  @@index([teacherId, startsAt])
+  @@index([studentId, startsAt])
+}
+
+enum LessonStatus {
+  pending
+  confirmed
+  completed
+  cancelled
+}
+
+model LessonNote {
+  id              String             @id @default(cuid())
+  lessonId        String
+  authorId        String
+  studentProfileId String?
+  visibility      LessonNoteVisibility @default(teacher_private)
+  title           String
+  content         String
+  lesson          Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  author          User               @relation("AuthorLessonNotes", fields: [authorId], references: [id], onDelete: Cascade)
+  studentProfile  StudentProfile?    @relation(fields: [studentProfileId], references: [id], onDelete: SetNull)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+enum LessonNoteVisibility {
+  teacher_private
+  shared_with_student
+}
+
+model SharedFile {
+  id            String          @id @default(cuid())
+  lessonId      String?
+  uploadedById  String
+  fileUrl       String
+  fileName      String
+  mimeType      String
+  sizeBytes     Int
+  category      SharedFileCategory
+  lesson        Lesson?         @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  uploadedBy    User            @relation("UploaderFiles", fields: [uploadedById], references: [id], onDelete: Cascade)
+  createdAt     DateTime        @default(now())
+}
+
+enum SharedFileCategory {
+  lesson_material
+  sheet_music
+  assignment
+}
+
+model PracticeSubmission {
+  id               String             @id @default(cuid())
+  lessonId         String?
+  studentProfileId String
+  studentId        String
+  audioFileUrl     String
+  audioFileName    String
+  notes            String?
+  feedback         String?
+  status           SubmissionStatus   @default(submitted)
+  lesson           Lesson?            @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  studentProfile   StudentProfile     @relation(fields: [studentProfileId], references: [id], onDelete: Cascade)
+  student          User               @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+}
+
+enum SubmissionStatus {
+  submitted
+  reviewed
+}
+
+model Payment {
+  id                 String         @id @default(cuid())
+  lessonId           String?
+  studentId          String
+  amountCents        Int
+  currency           String         @default("USD")
+  provider           PaymentProvider @default(paypal)
+  providerPaymentId  String?        @unique
+  status             PaymentStatus  @default(created)
+  paidAt             DateTime?
+  lesson             Lesson?        @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  student            User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+enum PaymentProvider {
+  paypal
+}
+
+enum PaymentStatus {
+  created
+  pending
+  paid
+  failed
+  refunded
+}

@@ -1,0 +1,49 @@
+.lesson-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    .lesson-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .lesson-duration {
+      font-size: 0.8rem;
+      color: #57606a;
+    }
+  }
+
+  &__time {
+    font-size: 0.875rem;
+    color: #57606a;
+    margin: 0;
+  }
+
+  &__reason {
+    font-size: 0.8rem;
+    color: #991b1b;
+    margin: 0;
+    font-style: italic;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+  }
+}

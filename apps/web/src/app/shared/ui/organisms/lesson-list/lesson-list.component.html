@@ -1,0 +1,23 @@
+<div class="lesson-list">
+  <h2 class="section-title">My Lessons</h2>
+
+  @if (loading()) {
+    <app-spinner />
+  } @else if (error()) {
+    <p class="error-msg">{{ error() }}</p>
+  } @else if (lessons().length === 0) {
+    <p class="empty-state">No lessons scheduled yet.</p>
+  } @else {
+    <div class="lessons">
+      @for (lesson of lessons(); track lesson.id) {
+        <lesson-card
+          [lesson]="lesson"
+          [userRole]="userRole"
+          (confirmLesson)="onConfirm($event)"
+          (completeLesson)="onComplete($event)"
+          (cancelLesson)="onCancel($event)"
+        />
+      }
+    </div>
+  }
+</div>

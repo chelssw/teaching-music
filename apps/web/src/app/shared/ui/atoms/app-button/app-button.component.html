@@ -1,0 +1,9 @@
+<button
+  class="app-button"
+  [class.secondary]="variant() === 'secondary'"
+  [class.danger]="variant() === 'danger'"
+  [attr.type]="type()"
+  [disabled]="disabled() || null"
+>
+  {{ label() }}
+</button>

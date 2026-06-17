@@ -1,0 +1,9 @@
+@if (label()) {
+  <label class="select-label" [for]="id()">{{ label() }}</label>
+}
+<select class="select-control" [id]="id()" (change)="onChange($event)">
+  <option value="" disabled [selected]="!value()">{{ placeholder() }}</option>
+  @for (opt of options(); track opt.value) {
+    <option [value]="opt.value" [selected]="opt.value === value()">{{ opt.label }}</option>
+  }
+</select>

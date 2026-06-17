@@ -1,0 +1,5 @@
+<div class="slot-row">
+  <span class="slot-day">{{ dayName }}</span>
+  <span class="slot-time">{{ slot().startTime }} – {{ slot().endTime }}</span>
+  <app-button label="Remove" variant="danger" (click)="removeSlot.emit(slot().id)" />
+</div>

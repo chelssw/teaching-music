@@ -1,0 +1,61 @@
+<div class="lesson-types-manager">
+  <div class="section-header">
+    <h2 class="section-title">Lesson Types</h2>
+    <app-button label="+ Add Type" variant="secondary" (click)="showForm.set(!showForm())" />
+  </div>
+
+  @if (loading()) {
+    <app-spinner />
+  } @else {
+    @if (showForm()) {
+      <div class="add-type-form">
+        <div class="form-grid">
+          <app-input
+            id="lt-title"
+            label="Title"
+            placeholder="e.g. Guitar Lesson"
+            [value]="newTitle()"
+            (valueChange)="newTitle.set($event)"
+          />
+          <app-input
+            id="lt-desc"
+            label="Description (optional)"
+            [value]="newDescription()"
+            (valueChange)="newDescription.set($event)"
+          />
+          <app-input
+            id="lt-duration"
+            label="Duration (min)"
+            type="number"
+            [value]="newDuration()"
+            (valueChange)="newDuration.set($event)"
+          />
+          <app-input
+            id="lt-price"
+            label="Price ($)"
+            type="number"
+            [value]="newPriceDollars()"
+            (valueChange)="newPriceDollars.set($event)"
+          />
+        </div>
+        <div class="form-actions">
+          <app-button label="Save" [disabled]="saving()" (click)="saveType()" />
+          <app-button label="Cancel" variant="secondary" (click)="showForm.set(false)" />
+        </div>
+      </div>
+    }
+
+    <div class="types-grid">
+      @if (lessonTypes().length === 0 && !showForm()) {
+        <p class="empty-state">No lesson types yet. Add one above.</p>
+      }
+      @for (lt of lessonTypes(); track lt.id) {
+        <lesson-type-card [lessonType]="lt" [showDelete]="true" (deleteType)="deleteType($event)" />
+      }
+    </div>
+
+    @if (error()) {
+      <p class="error-msg">{{ error() }}</p>
+    }
+  }
+</div>

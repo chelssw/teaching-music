@@ -1,0 +1,59 @@
+<div class="book-lesson-panel">
+  <h2 class="section-title">Book a Lesson</h2>
+
+  <div class="search-row">
+    <app-input
+      id="teacher-id"
+      label="Teacher ID"
+      placeholder="Paste the teacher's user ID"
+      [value]="teacherId()"
+      (valueChange)="teacherId.set($event)"
+    />
+    <app-button
+      label="Search"
+      [disabled]="loading() || !teacherId()"
+      (click)="searchTeacher()"
+    />
+  </div>
+
+  @if (loading()) {
+    <app-spinner />
+  }
+
+  @if (teacherLoaded()) {
+    <div class="teacher-info">
+      <p class="availability-hint">
+        <strong>Available:</strong> {{ availabilityDescription }}
+      </p>
+
+      @if (lessonTypes().length === 0) {
+        <p class="empty-state">This teacher has no lesson types set up yet.</p>
+      } @else {
+        <div class="booking-form">
+          <app-select
+            label="Lesson Type"
+            [options]="lessonTypeOptions"
+            [value]="selectedLessonTypeId()"
+            (valueChange)="selectedLessonTypeId.set($event)"
+          />
+          <app-input
+            id="lesson-time"
+            label="Date & Time"
+            type="datetime-local"
+            [value]="selectedDatetime()"
+            (valueChange)="selectedDatetime.set($event)"
+          />
+          <app-button
+            label="Book Lesson"
+            [disabled]="booking() || !selectedLessonTypeId() || !selectedDatetime()"
+            (click)="bookLesson()"
+          />
+        </div>
+      }
+    </div>
+  }
+
+  @if (error()) {
+    <p class="error-msg">{{ error() }}</p>
+  }
+</div>

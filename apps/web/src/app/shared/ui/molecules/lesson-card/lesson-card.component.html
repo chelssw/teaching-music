@@ -1,0 +1,31 @@
+<app-card>
+  <div class="lesson-card">
+    <div class="lesson-card__header">
+      <div class="lesson-card__title">
+        <span class="lesson-name">{{ lesson().lessonType.title }}</span>
+        <span class="lesson-duration">{{ lesson().lessonType.durationMinutes }} min</span>
+      </div>
+      <app-badge [text]="formatStatus(lesson().status)" [variant]="badgeVariant" />
+    </div>
+
+    <p class="lesson-card__time">
+      {{ formatDate(lesson().startsAt) }} – {{ formatTime(lesson().endsAt) }}
+    </p>
+
+    @if (lesson().cancellationReason) {
+      <p class="lesson-card__reason">Reason: {{ lesson().cancellationReason }}</p>
+    }
+
+    @if (lesson().status !== 'completed' && lesson().status !== 'cancelled') {
+      <div class="lesson-card__actions">
+        @if (userRole() === 'teacher' && lesson().status === 'pending') {
+          <app-button label="Confirm" (click)="confirmLesson.emit(lesson().id)" />
+        }
+        @if (userRole() === 'teacher' && lesson().status === 'confirmed') {
+          <app-button label="Mark Complete" (click)="completeLesson.emit(lesson().id)" />
+        }
+        <app-button label="Cancel" variant="danger" (click)="cancelLesson.emit(lesson().id)" />
+      </div>
+    }
+  </div>
+</app-card>

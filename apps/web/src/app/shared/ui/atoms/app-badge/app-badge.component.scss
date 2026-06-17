@@ -1,0 +1,29 @@
+.app-badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  background: #dff3ff;
+  color: #0c4a6e;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &[data-variant='pending'] {
+    background: #fff8c5;
+    color: #7d5100;
+  }
+
+  &[data-variant='confirmed'] {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  &[data-variant='completed'] {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  &[data-variant='cancelled'] {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+}

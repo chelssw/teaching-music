@@ -1,0 +1,47 @@
+<div class="availability-manager">
+  <h2 class="section-title">Availability</h2>
+
+  @if (loading()) {
+    <app-spinner />
+  } @else {
+    <div class="slots-list">
+      @if (slots().length === 0) {
+        <p class="empty-state">No availability slots set. Add your first slot below.</p>
+      }
+      @for (slot of slots(); track slot.id) {
+        <availability-slot-row [slot]="slot" (removeSlot)="removeSlot($event)" />
+      }
+    </div>
+
+    <div class="add-slot-form">
+      <h3 class="form-title">Add Slot</h3>
+      <div class="form-row">
+        <app-select
+          label="Day"
+          [options]="weekdayOptions"
+          [value]="newWeekday()"
+          (valueChange)="newWeekday.set($event)"
+        />
+        <app-input
+          id="start-time"
+          label="From"
+          type="time"
+          [value]="newStartTime()"
+          (valueChange)="newStartTime.set($event)"
+        />
+        <app-input
+          id="end-time"
+          label="To"
+          type="time"
+          [value]="newEndTime()"
+          (valueChange)="newEndTime.set($event)"
+        />
+        <app-button label="Add" [disabled]="saving()" (click)="addSlot()" />
+      </div>
+    </div>
+
+    @if (error()) {
+      <p class="error-msg">{{ error() }}</p>
+    }
+  }
+</div>
